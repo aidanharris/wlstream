@@ -142,7 +142,8 @@ static void pulse_server_info_cb(pa_context *context, const pa_server_info *info
     PulseCtx *ctx = data;
 
     pa_operation *op;
-    op = pa_context_get_sink_info_by_name(context, info->default_sink_name,
+    char *default_sink = getenv("PULSE_SINK");
+    op = pa_context_get_sink_info_by_name(context, (default_sink != NULL) ? default_sink : info->default_sink_name,
                                           pulse_sink_info_cb, ctx);
     pa_operation_unref(op);
 }
